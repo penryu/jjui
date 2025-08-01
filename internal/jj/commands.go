@@ -2,6 +2,7 @@ package jj
 
 import (
 	"fmt"
+	"github.com/idursun/jjui/internal/config"
 	"strconv"
 	"strings"
 )
@@ -32,7 +33,7 @@ func ConfigListAll() CommandArgs {
 }
 
 func Log(revset string, limit int) CommandArgs {
-	args := []string{"log", "--color", "always", "--quiet"}
+	args := config.Current.Preview.LogCommand
 	if revset != "" {
 		args = append(args, "-r", revset)
 	}

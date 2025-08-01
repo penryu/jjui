@@ -102,6 +102,7 @@ type UIConfig struct {
 }
 
 type PreviewConfig struct {
+	LogCommand               []string `toml:"log_command"`
 	RevisionCommand          []string `toml:"revision_command"`
 	OplogCommand             []string `toml:"oplog_command"`
 	FileCommand              []string `toml:"file_command"`
