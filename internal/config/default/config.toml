@@ -112,6 +112,7 @@ limit = 0
 
 [revision]
   log_command = ["log", "--color", "always", "--quiet"]
+  # revset = "zzzzzzz"  # defaults to jj's revsets.log
 
 [preview]
   revision_command = ["show", "--color", "always", "-r", "$change_id"]

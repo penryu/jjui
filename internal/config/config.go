@@ -104,6 +104,7 @@ type UIConfig struct {
 
 type RevisionConfig struct {
 	LogCommand []string `toml:"log_command"`
+	Revset     string   `toml:"revset"`
 }
 
 type PreviewConfig struct {
