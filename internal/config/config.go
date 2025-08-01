@@ -118,6 +118,7 @@ func (ui *UIConfig) UnmarshalTOML(data interface{}) error {
 
 type RevisionConfig struct {
 	LogCommand []string `toml:"log_command"`
+	Revset     string   `toml:"revset"`
 }
 
 type PreviewConfig struct {
