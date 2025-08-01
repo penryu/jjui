@@ -2,9 +2,10 @@ package jj
 
 import (
 	"fmt"
-	"github.com/idursun/jjui/internal/config"
 	"strconv"
 	"strings"
+
+	"github.com/idursun/jjui/internal/config"
 )
 
 const (
@@ -33,7 +34,7 @@ func ConfigListAll() CommandArgs {
 }
 
 func Log(revset string, limit int) CommandArgs {
-	args := config.Current.Preview.LogCommand
+	args := config.Current.Revision.LogCommand
 	if revset != "" {
 		args = append(args, "-r", revset)
 	}
