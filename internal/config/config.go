@@ -70,50 +70,36 @@ type ThemeConfig struct {
 	Light string `toml:"light"`
 }
 
+func (t *ThemeConfig) UnmarshalTOML(data any) error {
+	switch v := data.(type) {
+	case string:
+		t.Dark = v
+		t.Light = v
+	case map[string]interface{}:
+		if dark, ok := v["dark"]; ok {
+			if darkStr, isString := dark.(string); isString {
+				t.Dark = darkStr
+			} else {
+				return fmt.Errorf("invalid type for 'dark' in theme configuration: expected string, got %T", dark)
+			}
+		}
+		if light, ok := v["light"]; ok {
+			if lightStr, isString := light.(string); isString {
+				t.Light = lightStr
+			} else {
+				return fmt.Errorf("invalid type for 'light' in theme configuration: expected string, got %T", light)
+			}
+		}
+	}
+	return nil
+}
+
 type UIConfig struct {
-	Theme  string           `toml:"theme"`
-	Themes ThemeConfig      `toml:"-"`
+	Theme  ThemeConfig      `toml:"theme"`
 	Colors map[string]Color `toml:"colors"`
 	// TODO(ilyagr): It might make sense to rename this to `auto_refresh_period` to match `--period` option
 	// once we have a mechanism to deprecate the old name softly.
 	AutoRefreshInterval int `toml:"auto_refresh_interval"`
-}
-
-func (ui *UIConfig) UnmarshalTOML(data interface{}) error {
-	if m, ok := data.(map[string]interface{}); ok {
-		if v, exists := m["auto_refresh_interval"]; exists {
-			if i, ok := v.(int64); ok {
-				ui.AutoRefreshInterval = int(i)
-			}
-		}
-
-		if v, exists := m["colors"]; exists {
-			if colorMap, ok := v.(map[string]interface{}); ok {
-				ui.Colors = make(map[string]Color)
-				for name, colorData := range colorMap {
-					var color Color
-					if err := color.UnmarshalTOML(colorData); err == nil {
-						ui.Colors[name] = color
-					}
-				}
-			}
-		}
-
-		if themeValue, exists := m["theme"]; exists {
-			if themeStr, isString := themeValue.(string); isString {
-				ui.Theme = themeStr
-			} else if themeMap, isMap := themeValue.(map[string]interface{}); isMap {
-				if dark, ok := themeMap["dark"].(string); ok {
-					ui.Themes.Dark = dark
-				}
-				if light, ok := themeMap["light"].(string); ok {
-					ui.Themes.Light = light
-				}
-			}
-		}
-	}
-
-	return nil
 }
 
 type RevisionConfig struct {

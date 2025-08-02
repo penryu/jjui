@@ -29,7 +29,8 @@ theme = "my-theme"
 	config := &Config{}
 	err := config.Load(content)
 	assert.NoError(t, err)
-	assert.Equal(t, "my-theme", config.UI.Theme)
+	assert.Equal(t, "my-theme", config.UI.Theme.Light)
+	assert.Equal(t, "my-theme", config.UI.Theme.Dark)
 }
 
 func TestLoad_Theme_Nested(t *testing.T) {
@@ -41,8 +42,8 @@ light = "light-theme"
 	config := &Config{}
 	err := config.Load(content)
 	assert.NoError(t, err)
-	assert.Equal(t, "dark-theme", config.UI.Themes.Dark)
-	assert.Equal(t, "light-theme", config.UI.Themes.Light)
+	assert.Equal(t, "dark-theme", config.UI.Theme.Dark)
+	assert.Equal(t, "light-theme", config.UI.Theme.Light)
 }
 
 func TestLoad_AutoRefreshInterval(t *testing.T) {

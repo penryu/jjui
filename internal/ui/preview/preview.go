@@ -50,10 +50,6 @@ type refreshPreviewContentMsg struct {
 	Tag int
 }
 
-type updatePreviewContentMsg struct {
-	Content string
-}
-
 func (m *Model) Width() int {
 	return m.width
 }
@@ -75,15 +71,17 @@ func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
+func (m *Model) updatePreviewContent(content string) {
+	m.content = content
+	m.contentLineCount = lipgloss.Height(m.content)
+	m.reset()
+}
+
 func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	if k, ok := msg.(previewMsg); ok {
 		msg = k.msg
 	}
 	switch msg := msg.(type) {
-	case updatePreviewContentMsg:
-		m.content = msg.Content
-		m.contentLineCount = lipgloss.Height(m.content)
-		m.reset()
 	case common.SelectionChangedMsg, common.RefreshMsg:
 		m.tag++
 		tag := m.tag
@@ -94,35 +92,29 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		if m.tag == msg.Tag {
 			switch msg := m.context.SelectedItem.(type) {
 			case context.SelectedFile:
-				return m, func() tea.Msg {
-					replacements := map[string]string{
-						jj.RevsetPlaceholder:   m.context.CurrentRevset,
-						jj.ChangeIdPlaceholder: msg.ChangeId,
-						jj.CommitIdPlaceholder: msg.CommitId,
-						jj.FilePlaceholder:     msg.File,
-					}
-					output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.FileCommand, replacements))
-					return updatePreviewContentMsg{Content: string(output)}
+				replacements := map[string]string{
+					jj.RevsetPlaceholder:   m.context.CurrentRevset,
+					jj.ChangeIdPlaceholder: msg.ChangeId,
+					jj.CommitIdPlaceholder: msg.CommitId,
+					jj.FilePlaceholder:     msg.File,
 				}
+				output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.FileCommand, replacements))
+				m.updatePreviewContent(string(output))
 			case context.SelectedRevision:
 				replacements := map[string]string{
 					jj.RevsetPlaceholder:   m.context.CurrentRevset,
 					jj.ChangeIdPlaceholder: msg.ChangeId,
 					jj.CommitIdPlaceholder: msg.CommitId,
 				}
-				return m, func() tea.Msg {
-					output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.RevisionCommand, replacements))
-					return updatePreviewContentMsg{Content: string(output)}
-				}
+				output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.RevisionCommand, replacements))
+				m.updatePreviewContent(string(output))
 			case context.SelectedOperation:
 				replacements := map[string]string{
 					jj.RevsetPlaceholder:      m.context.CurrentRevset,
 					jj.OperationIdPlaceholder: msg.OperationId,
 				}
-				return m, func() tea.Msg {
-					output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.OplogCommand, replacements))
-					return updatePreviewContentMsg{Content: string(output)}
-				}
+				output, _ := m.context.RunCommandImmediate(jj.TemplatedArgs(config.Current.Preview.OplogCommand, replacements))
+				m.updatePreviewContent(string(output))
 			}
 		}
 	case tea.KeyMsg:

@@ -163,17 +163,9 @@ func main() {
 
 	var userThemeName string
 	if lipgloss.HasDarkBackground() {
-		if config.Current.UI.Themes.Dark != "" {
-			userThemeName = config.Current.UI.Themes.Dark
-		} else if config.Current.UI.Theme != "" {
-			userThemeName = config.Current.UI.Theme
-		}
+		userThemeName = config.Current.UI.Theme.Dark
 	} else {
-		if config.Current.UI.Themes.Light != "" {
-			userThemeName = config.Current.UI.Themes.Light
-		} else if config.Current.UI.Theme != "" {
-			userThemeName = config.Current.UI.Theme
-		}
+		userThemeName = config.Current.UI.Theme.Light
 	}
 
 	if userThemeName != "" {
