@@ -41,8 +41,8 @@ func Log(revset string, limit int) CommandArgs {
 	if limit > 0 {
 		args = append(args, "--limit", strconv.Itoa(limit))
 	}
-	if config.Current.Log.Template != "" {
-		args = append(args, "-T", config.Current.Log.Template)
+	if config.Current.Revisions.Template != "" {
+		args = append(args, "-T", config.Current.Revisions.Template)
 	}
 	return args
 }

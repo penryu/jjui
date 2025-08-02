@@ -110,7 +110,7 @@ limit = 0
 
 [ui.colors]
 
-[log]
+[revisions]
   # template = 'builtin_log_compact' # overrides jj's templates.log
   # revset = "zzzzzzz"               # overrides jj's revsets.log
 

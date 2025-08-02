@@ -186,7 +186,7 @@ func main() {
 	if revset != "" {
 		appContext.DefaultRevset = revset
 	} else if appContext.JJConfig.Revsets.Log != "" {
-		appContext.DefaultRevset = config.Current.Log.Revset
+		appContext.DefaultRevset = config.Current.Revisions.Revset
 	} else {
 		appContext.DefaultRevset = appContext.JJConfig.Revsets.Log
 	}
