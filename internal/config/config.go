@@ -17,7 +17,7 @@ var Current = loadDefaultConfig()
 type Config struct {
 	Keys                           KeyMappings[keys] `toml:"keys"`
 	UI                             UIConfig          `toml:"ui"`
-	Revision                       RevisionConfig    `toml:"revision"`
+	Log                            LogConfig         `toml:"log"`
 	Preview                        PreviewConfig     `toml:"preview"`
 	OpLog                          OpLogConfig       `toml:"oplog"`
 	Graph                          GraphConfig       `toml:"graph"`
@@ -102,9 +102,9 @@ type UIConfig struct {
 	AutoRefreshInterval int `toml:"auto_refresh_interval"`
 }
 
-type RevisionConfig struct {
-	LogCommand []string `toml:"log_command"`
-	Revset     string   `toml:"revset"`
+type LogConfig struct {
+	Template string `toml:"template"`
+	Revset   string `toml:"revset"`
 }
 
 type PreviewConfig struct {

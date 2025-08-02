@@ -34,12 +34,15 @@ func ConfigListAll() CommandArgs {
 }
 
 func Log(revset string, limit int) CommandArgs {
-	args := config.Current.Revision.LogCommand
+	args := []string{"log", "--color", "always", "--quiet"}
 	if revset != "" {
 		args = append(args, "-r", revset)
 	}
 	if limit > 0 {
 		args = append(args, "--limit", strconv.Itoa(limit))
+	}
+	if config.Current.Log.Template != "" {
+		args = append(args, "-T", config.Current.Log.Template)
 	}
 	return args
 }
