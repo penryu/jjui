@@ -33,6 +33,21 @@ type Color struct {
 	Underline     bool   `toml:"underline"`
 	Strikethrough bool   `toml:"strikethrough"`
 	Reverse       bool   `toml:"reverse"`
+	flags         ColorAttribute
+}
+
+type ColorAttribute uint8
+
+const (
+	ColorAttributeBold ColorAttribute = 1 << iota
+	ColorAttributeItalic
+	ColorAttributeUnderline
+	ColorAttributeStrikethrough
+	ColorAttributeReverse
+)
+
+func (c *Color) IsSet(flags ColorAttribute) bool {
+	return c.flags&flags == flags
 }
 
 func (c *Color) UnmarshalTOML(text any) error {
@@ -48,18 +63,23 @@ func (c *Color) UnmarshalTOML(text any) error {
 		}
 		if p, ok := v["bold"]; ok {
 			c.Bold = p.(bool)
+			c.flags |= ColorAttributeBold
 		}
 		if p, ok := v["italic"]; ok {
 			c.Italic = p.(bool)
+			c.flags |= ColorAttributeItalic
 		}
 		if p, ok := v["underline"]; ok {
 			c.Underline = p.(bool)
+			c.flags |= ColorAttributeUnderline
 		}
 		if p, ok := v["strikethrough"]; ok {
 			c.Strikethrough = p.(bool)
+			c.flags |= ColorAttributeStrikethrough
 		}
 		if p, ok := v["reverse"]; ok {
 			c.Reverse = p.(bool)
+			c.flags |= ColorAttributeReverse
 		}
 	}
 	return nil

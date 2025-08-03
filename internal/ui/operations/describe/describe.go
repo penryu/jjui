@@ -102,8 +102,8 @@ func NewOperation(context *context.MainContext, revision string, width int) (ope
 	input.MaxHeight = 10
 	input.Prompt = ""
 	input.ShowLineNumbers = false
-	input.FocusedStyle.Base = selectedStyle
-	input.FocusedStyle.CursorLine = selectedStyle
+	input.FocusedStyle.Base = selectedStyle.Underline(false).Strikethrough(false).Reverse(false).Blink(false)
+	input.FocusedStyle.CursorLine = input.FocusedStyle.Base
 	input.SetValue(desc)
 	input.SetHeight(h + 1)
 	input.SetWidth(width)

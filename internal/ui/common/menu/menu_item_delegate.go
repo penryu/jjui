@@ -57,26 +57,28 @@ func (l MenuItemDelegate) Render(w io.Writer, m list.Model, index int, item list
 		titleStyle    = l.styles.text
 		descStyle     = l.styles.dimmed
 		shortcutStyle = l.styles.shortcut
-		rowStyle      = l.styles.text
 	)
 
 	if index == m.Index() {
 		titleStyle = l.styles.selected
 		descStyle = l.styles.selected
 		shortcutStyle = shortcutStyle.Background(l.styles.selected.GetBackground())
-		rowStyle = l.styles.selected
 	}
 
-	rowStyle = rowStyle.PaddingLeft(1).PaddingRight(1).Width(m.Width() + 2)
-
+	titleLine := ""
 	if shortcut != "" {
-		_, _ = fmt.Fprintln(w, rowStyle.Render(lipgloss.JoinHorizontal(0, shortcutStyle.Render(shortcut), titleStyle.Render("", title))))
+		titleLine = lipgloss.JoinHorizontal(0, shortcutStyle.PaddingLeft(1).Render(shortcut), titleStyle.PaddingLeft(1).Render(title))
 	} else {
-		_, _ = fmt.Fprintln(w, rowStyle.Render(titleStyle.Render(title)))
+		titleLine = titleStyle.PaddingLeft(1).Render(title)
 	}
+	titleLine = lipgloss.PlaceHorizontal(m.Width()+2, 0, titleLine, lipgloss.WithWhitespaceBackground(titleStyle.GetBackground()))
 
 	descStyle = descStyle.PaddingLeft(1).PaddingRight(1).Width(m.Width() + 2)
-	_, _ = fmt.Fprintf(w, descStyle.Render(desc))
+	descLine := descStyle.Render(desc)
+	descLine = lipgloss.PlaceHorizontal(m.Width()+2, 0, descLine, lipgloss.WithWhitespaceBackground(titleStyle.GetBackground()))
+
+	rendered := lipgloss.JoinVertical(lipgloss.Left, titleLine, descLine)
+	_, _ = fmt.Fprint(w, rendered)
 }
 
 func (l MenuItemDelegate) Height() int {

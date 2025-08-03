@@ -23,7 +23,7 @@ error = "red"
 		"error":    {Fg: "red"},
 	}
 
-	assert.Equal(t, expected, theme)
+	assert.EqualExportedValues(t, expected, theme)
 }
 
 func TestLoadThemeWithBase(t *testing.T) {
@@ -49,5 +49,5 @@ selected = { fg = "yellow", bg = "blue" }
 		"border":   {Fg: "white"},
 	}
 
-	assert.Equal(t, expected, theme)
+	assert.EqualExportedValues(t, expected, theme)
 }

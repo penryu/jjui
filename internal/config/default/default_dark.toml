@@ -21,4 +21,4 @@ border = "bright white"
 "status title" = { fg = "black", bg = "magenta", bold = true }
 "menu title" = { fg = "230", bg = "62", bold = true }
 "menu matched" = { fg = "magenta", bold = true }
-"menu selected" = { fg = "cyan", bg = "default", bold = true }
+"menu selected" = { fg = "cyan", bg = "default", bold = true, underline = false }

@@ -123,21 +123,23 @@ func createStyleFrom(color config.Color) lipgloss.Style {
 	if color.Bg != "" {
 		style = style.Background(parseColor(color.Bg))
 	}
-	if color.Bold {
-		style = style.Bold(true)
+
+	if color.IsSet(config.ColorAttributeBold) || color.Bold {
+		style = style.Bold(color.Bold)
 	}
-	if color.Underline {
-		style = style.Underline(true)
+	if color.IsSet(config.ColorAttributeItalic) || color.Italic {
+		style = style.Italic(color.Italic)
 	}
-	if color.Reverse {
-		style = style.Reverse(true)
+	if color.IsSet(config.ColorAttributeUnderline) || color.Underline {
+		style = style.Underline(color.Underline)
 	}
-	if color.Italic {
-		style = style.Italic(true)
+	if color.IsSet(config.ColorAttributeStrikethrough) || color.Strikethrough {
+		style = style.Strikethrough(color.Strikethrough)
 	}
-	if color.Strikethrough {
-		style = style.Strikethrough(true)
+	if color.IsSet(config.ColorAttributeReverse) || color.Reverse {
+		style = style.Reverse(color.Reverse)
 	}
+
 	return style
 }
 
